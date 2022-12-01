@@ -28,30 +28,39 @@ namespace Composite
             subCompany2.Add(new Department("開発部", 80));
             subCompany2.Add(new Department("営業部", 100));
 
-            // グループ全体の員数を取得
+            // グループ全体の員数を出力
             rootCompany.PrintNumberOfStaff();
             subCompany1.PrintNumberOfStaff();
             subCompany2.PrintNumberOfStaff();
         }
     }
 
-    public abstract class Object
+    /// <summary>Groupの拡張メソッド</summary>
+    public static class GroupExt
     {
-        public abstract string Name { get;}
-        public abstract int NumberOfStaff { get; }
-
-        public void PrintNumberOfStaff() => Console.WriteLine($"{Name}の員数 = {NumberOfStaff}名");
+        //員数を出力
+        public static void PrintNumberOfStaff(this Group grp) 
+            => Console.WriteLine($"{grp.GetName()}の員数 = {grp.GetNumberOfStaff()}名");
     }
 
-    public class Company : Object
+    /// <summary>Component クラス</summary>
+    public abstract class Group
+    {
+        public abstract int GetNumberOfStaff();
+        public abstract string GetName();
+    }
+
+    /// <summary>Composite クラス</summary>
+    public class Company : Group
     {
         //会社名
-        public override string Name { get; }
+        string Name;
+
         //会社の員数
-        public override int NumberOfStaff => Objs.Select(obj => obj.NumberOfStaff).Sum();
+        int NumberOfStaff;
 
         // 子会社または部署を保存
-        List<Object> Objs = new List<Object>();
+        List<Group> Grps = new List<Group>();
 
         public Company(string name)
         {
@@ -59,22 +68,37 @@ namespace Composite
         }
 
         // 子会社または部署を追加
-        public void Add(Object obj)
+        public void Add(Group grp)
         {
-            Objs.Add(obj);
+            Grps.Add(grp);
         }
+
+        //会社の員数を取得
+        public override int GetNumberOfStaff() => Grps.Select(grp => grp.GetNumberOfStaff()).Sum();
+        
+        //会社の員数を取得
+        public override string GetName() => Name;
     }
 
-    public class Department : Object
+    /// <summary>Leaf クラス</summary>
+    public class Department : Group
     {
         //部署名
-        public override string Name { get; }
+        string Name;
+
         //部署の員数
-        public override int NumberOfStaff { get;}
+        int NumberOfStaff;
+
         public Department(string name, int numberOfStaff)
         {
             Name = name;
             NumberOfStaff = numberOfStaff;
         }
+
+        //部署名を取得
+        public override string GetName() => Name;
+
+        //部署の員数を取得
+        public override int GetNumberOfStaff() => NumberOfStaff;
     }
 }
