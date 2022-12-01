@@ -1,0 +1,14 @@
+.vs/
+Debug/
+Release/
+bin/
+obj/
+
+*.aps
+*.filters
+*.user
+
+packages/
+*.swp
+*~
+tags
