@@ -63,6 +63,7 @@ classDiagram
 Group <|-- Company
 Group <|-- Department
 Company o-- Group
+Client --> Group
 
 class Group {
 	<<interface>>
@@ -82,12 +83,15 @@ class Department {
 	+GetNumberOfStaff() int 
 	+GetName() string
         }
+class Client {
+	+PrintNumberOfStaff()
+}
 ```
 - サンプルは「図形株式会社」と「図形アルファテック株式会社」と「図形テック株式会社」のそれぞれに対して「PrintNumberOfStaff」メソッドを実行しているが、「子会社・部署」が存在する場合、再帰的に下層の「員数」(GetNumberOfStaff)を取得して合計を計算している。
- - 「Company」クラスも「Department」クラスも「Object」クラスを継承しているため、「GetNumberOfStaff」メソッドを実装していることが保証されている。
+ - 「Company」クラスも「Department」クラスも「Group」クラスを継承しているため、「GetNumberOfStaff」メソッドを実装していることが保証されている。
 
 ## メリット
-1. 「木構造」を持つデータが追加されても、元の処理は全く変更せずに処理を行うことができる。
+  1. 「木構造」を持つデータが追加されても、元の処理は全く変更せずに処理を行うことができる。
  - 例えば、図研アルファテック会社に「検証課（員数：5）」を追加すると、「PrintNumberOfStaff」の出力結果は、以下のようになる。
 ```
 【検証課追加前】
@@ -102,8 +106,8 @@ class Department {
 ```
  - 員数の取得処理(NumberOfStaff)を変更しなくて、追加した部署の員数が加算される。
 
-2. 枝と葉を同様に扱える。
- - 例えば、
+  2. 枝と葉を同様に扱える。
+ - 例のように、PrintNumberOfStaff()メソッドは会社か部署かを意識せずに、GetNumberOfStaff()を取得できる。
 ## デメリット
 1. 抽象クラスは、自らの子孫である「枝」と「葉」クラスを同一視するために、共有のインターフェイスを作成するのは簡単のわけではない。
 2. 「枝」と「葉」のメソッドを両方定義するため、「枝」「葉」それぞれに不要なメソッドが見える場合がある。
