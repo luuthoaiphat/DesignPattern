@@ -16,7 +16,7 @@ C#
 3. Composite
 4. Decorator
 5. Facade
-6. Flyweith
+6. Flyweight
 7. Proxy
 
 ### 振舞関連パターン (Behavior Patterns)
@@ -25,7 +25,7 @@ C#
 3. Iterator
 4. Mediator
 5. Memento
-6. Observe
+6. Observer
 7. State
 8. Strategy
 9. Template Method
